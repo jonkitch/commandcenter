@@ -7,10 +7,11 @@ const AI_ENDPOINT = '/api/claude'
 const MODEL = 'claude-sonnet-4-20250514'
 
 const BUSINESSES = {
-  tinting:{ id:'tinting', label:'Auto Spa',       icon:'💧', color:'#0891B2', light:'#E0F2FE', dark:'#0E7490', desc:'Window tinting & auto detailing', persona:'window tinting and auto spa shop' },
-  rocket: { id:'rocket',  label:'Rocket Science', icon:'🚀', color:'#7C3AED', light:'#EDE9FE', dark:'#6D28D9', desc:'Liquid nitrogen ice cream', persona:'liquid nitrogen ice cream shop' },
-  church: { id:'church',  label:'Bible Way',       icon:'✝',  color:'#B45309', light:'#FEF3C7', dark:'#92400E', desc:'Pastoral ministry', persona:'Apostolic Pentecostal church' },
-  lechat: { id:'lechat',  label:'Le Chat Digital', icon:'⬡',  color:'#059669', light:'#D1FAE5', dark:'#047857', desc:'Marketing & AI consulting', persona:'digital marketing and AI consulting' },
+  tinting:  { id:'tinting',  label:'Auto Spa',         icon:'💧', color:'#0891B2', light:'#E0F2FE', dark:'#0E7490', desc:'Auto detailing & spa services',  persona:'auto detailing and car spa shop' },
+  window:   { id:'window',   label:'Window Tinting',   icon:'🪟', color:'#0F766E', light:'#CCFBF1', dark:'#0D5C57', desc:'Custom window tinting',           persona:'custom window tinting business' },
+  rocket:   { id:'rocket',   label:'Rocket Science',   icon:'🚀', color:'#7C3AED', light:'#EDE9FE', dark:'#6D28D9', desc:'Liquid nitrogen ice cream',        persona:'liquid nitrogen ice cream shop' },
+  church:   { id:'church',   label:'Bible Way',         icon:'✝',  color:'#B45309', light:'#FEF3C7', dark:'#92400E', desc:'Pastoral ministry',               persona:'Apostolic Pentecostal church' },
+  lechat:   { id:'lechat',   label:'Le Chat Digital',   icon:'⬡',  color:'#059669', light:'#D1FAE5', dark:'#047857', desc:'Marketing & AI consulting',       persona:'digital marketing and AI consulting' },
 }
 const BIZ = Object.values(BUSINESSES)
 const TODAY = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})
@@ -547,12 +548,13 @@ const TodosTab = ({ todoist, token }) => {
 
 // ── Root CommandCenter ────────────────────────────────────────────────────────
 const TABS = [
-  { id:'debrief', label:'Morning Debrief', icon:'☀️' },
-  { id:'tinting', label:'Auto Spa', icon:'💧' },
-  { id:'rocket',  label:'Rocket Science', icon:'🚀' },
-  { id:'church',  label:'Bible Way', icon:'✝' },
-  { id:'lechat',  label:'Le Chat Digital', icon:'⬡' },
-  { id:'todos',   label:'All Tasks', icon:'✓' },
+  { id:'debrief', label:'Morning Debrief',  icon:'☀️' },
+  { id:'tinting', label:'Auto Spa',          icon:'💧' },
+  { id:'window',  label:'Window Tinting',   icon:'🪟' },
+  { id:'rocket',  label:'Rocket Science',   icon:'🚀' },
+  { id:'church',  label:'Bible Way',         icon:'✝'  },
+  { id:'lechat',  label:'Le Chat Digital',   icon:'⬡'  },
+  { id:'todos',   label:'All Tasks',         icon:'✓'  },
 ]
 
 export default function CommandCenter() {
@@ -631,7 +633,7 @@ export default function CommandCenter() {
       {/* Content */}
       <div style={{ maxWidth:1160, margin:'0 auto', padding:'26px 28px' }}>
         {tab === 'debrief' && <DebriefTab todoistTasks={todoist.tasks} />}
-        {['tinting','rocket','church','lechat'].includes(tab) && <BizTab biz={BUSINESSES[tab]} todoist={todoist} token={settings.token} projectMap={settings.projectMap} />}
+        {['tinting','window','rocket','church','lechat'].includes(tab) && <BizTab biz={BUSINESSES[tab]} todoist={todoist} token={settings.token} projectMap={settings.projectMap} />}
         {tab === 'todos' && <TodosTab todoist={todoist} token={settings.token} />}
       </div>
     </div>
