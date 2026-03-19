@@ -75,7 +75,7 @@ const useTodoist = (token, projectMap) => {
     setSyncing(s => ({ ...s, [bizId]: true }))
     try {
       const raw = await td(token, 'GET', `/tasks?project_id=${pid}`)
-      setTasks(t => ({ ...t, [bizId]: raw }))
+setTasks(t => ({ ...t, [bizId]: raw.results || raw }))
     } catch (e) { console.error('Todoist fetch:', e) }
     setSyncing(s => ({ ...s, [bizId]: false }))
   }, [token, projectMap])
@@ -118,7 +118,7 @@ const SetupDrawer = ({ settings, onSave, onClose }) => {
   const fetchProjects = async () => {
     if (!token.trim()) return
     setLoading(true); setErr('')
-    try { setProjects(await td(token, 'GET', '/projects')) }
+    try { const res = await td(token, 'GET', '/projects'); setProjects(res.results || res) }
     catch { setErr('Could not connect — double-check your token.') }
     setLoading(false)
   }
