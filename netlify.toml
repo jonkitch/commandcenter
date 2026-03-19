@@ -4,8 +4,8 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/api/todoist"
+  to = "/.netlify/functions/todoist"
   status = 200
 
 [[redirects]]
