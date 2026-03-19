@@ -32,7 +32,7 @@ const ai = async (system, user) => {
   return d.content?.filter(x => x.type === 'text').map(x => x.text).join('\n') || ''
 }
 
-const td = async (const td = async (token, method, path, body) => {
+const td = async (token, method, path, body) => {
   const res = await fetch('/api/todoist', {
     method: 'POST',
     headers: {
@@ -46,7 +46,6 @@ const td = async (const td = async (token, method, path, body) => {
   if (res.status === 204) return true
   if (!res.ok) { const t = await res.text(); throw new Error(`Todoist ${res.status}: ${t}`) }
   return res.json()
-
 }
 
 // ── Shared UI ─────────────────────────────────────────────────────────────────
