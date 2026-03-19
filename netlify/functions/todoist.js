@@ -36,10 +36,8 @@ export const handler = async (event) => {
       fetchOptions.body = event.body
     }
 
-    const response = await fetch(
-      `https://api.todoist.com/rest/v2${apiPath}`,
-      fetchOptions
-    )
+    const response = await fetch(`https://api.todoist.com/api/v1${apiPath}`, fetchOptions)
+
 
     if (response.status === 204) {
       return {
