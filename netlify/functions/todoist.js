@@ -12,25 +12,34 @@ export const handler = async (event) => {
   }
 
   const token   = event.headers['x-todoist-token']
-  const method  = event.headers['x-todoist-method'] || event.httpMethod
+  const method  = (event.headers['x-todoist-method'] || 'GET').toUpperCase()
   const apiPath = event.headers['x-todoist-path']
 
-  if (!token) {
-    return { statusCode: 401, body: JSON.stringify({ error: 'Missing Todoist token' }) }
-  }
-  if (!apiPath) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing API path' }) }
+  if (!token || !apiPath) {
+    return {
+      statusCode: 400,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: `Missing required headers. token=${!!token} path=${!!apiPath}` }),
+    }
   }
 
   try {
-    const response = await fetch(`https://api.todoist.com/rest/v2${apiPath}`, {
+    const fetchOptions = {
       method,
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: method !== 'GET' && event.body ? event.body : undefined,
-    })
+    }
+
+    if (method !== 'GET' && method !== 'DELETE' && event.body) {
+      fetchOptions.body = event.body
+    }
+
+    const response = await fetch(
+      `https://api.todoist.com/rest/v2${apiPath}`,
+      fetchOptions
+    )
 
     if (response.status === 204) {
       return {
@@ -40,20 +49,20 @@ export const handler = async (event) => {
       }
     }
 
-    const data = await response.json()
+    const text = await response.text()
     return {
       statusCode: response.status,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify(data),
+      body: text,
     }
   } catch (err) {
     return {
       statusCode: 500,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: err.message }),
+      body: JSON.stringify({ error: err.message, stack: err.stack }),
     }
   }
 }
