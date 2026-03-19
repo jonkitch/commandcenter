@@ -5,21 +5,6 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 // In local dev with `netlify dev`, same URL works via netlify.toml redirect.
 const AI_ENDPOINT = '/api/claude'
 const MODEL = 'claude-sonnet-4-20250514'
-const TODOIST = 'const td = async (token, method, path, body) => {
-  const res = await fetch('/api/todoist', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Todoist-Token': token,
-      'X-Todoist-Method': method,
-      'X-Todoist-Path': path,
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  })
-  if (res.status === 204) return true
-  if (!res.ok) { const t = await res.text(); throw new Error(`Todoist ${res.status}: ${t}`) }
-  return res.json()
-}'
 
 const BUSINESSES = {
   tinting:{ id:'tinting', label:'Auto Spa',       icon:'💧', color:'#0891B2', light:'#E0F2FE', dark:'#0E7490', desc:'Window tinting & auto detailing', persona:'window tinting and auto spa shop' },
@@ -47,15 +32,21 @@ const ai = async (system, user) => {
   return d.content?.filter(x => x.type === 'text').map(x => x.text).join('\n') || ''
 }
 
-const td = async (token, method, path, body) => {
-  const res = await fetch(`${TODOIST}${path}`, {
-    method,
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+const td = async (const td = async (token, method, path, body) => {
+  const res = await fetch('/api/todoist', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Todoist-Token': token,
+      'X-Todoist-Method': method,
+      'X-Todoist-Path': path,
+    },
     body: body ? JSON.stringify(body) : undefined,
   })
   if (res.status === 204) return true
   if (!res.ok) { const t = await res.text(); throw new Error(`Todoist ${res.status}: ${t}`) }
   return res.json()
+
 }
 
 // ── Shared UI ─────────────────────────────────────────────────────────────────
